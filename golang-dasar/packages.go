@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"math"
 	"os"
 )
 
@@ -27,4 +28,13 @@ func main(){
 	flag.Parse()
 
 	fmt.Println(*host, *username, *password)
+
+	// package math
+	pi := 3.14
+	fmt.Println(math.Round(pi))
+	fmt.Println(math.Floor(pi))
+	fmt.Println(math.Ceil(pi))
+	fmt.Println(math.Max(3.14, 22.7))
+	fmt.Println(math.Min(3.14, 22.7))
+
 }
