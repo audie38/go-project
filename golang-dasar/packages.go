@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 )
@@ -18,4 +19,12 @@ func main(){
 
 	fmt.Println(os.Getenv("GOPATH"))
 
+	// package flag
+	var host *string = flag.String("host", "localhost", "Put your database host")
+	var username *string = flag.String("username", "root", "Put your database username")
+	var password *string = flag.String("password", "root", "Put your database password")
+
+	flag.Parse()
+
+	fmt.Println(*host, *username, *password)
 }
