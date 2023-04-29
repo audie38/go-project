@@ -8,4 +8,5 @@ import (
 
 func main() {
 	fmt.Println(go_say_hello.SayHello())
+	go_say_hello.SayHelloName("Milson")
 }
