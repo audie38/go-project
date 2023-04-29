@@ -6,6 +6,14 @@ type Address struct {
 	City, Province, Country string
 }
 
+type Man struct{
+	Name string
+}
+
+func (man *Man) Married(){
+	man.Name = "Mr. " + man.Name
+}
+
 func ChangeAddressToIndonesia(address Address){
 	address.Country = "Indonesia"
 }
@@ -56,5 +64,9 @@ func main() {
 	fmt.Println(addr4)
 	ChangeAddrToIndonesia(addr4) // data will change
 	fmt.Println(addr4)
+
+	ichigo := Man{Name: "Kurosaki"}
+	ichigo.Married()
+	fmt.Println(ichigo)
 
 }
