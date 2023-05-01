@@ -81,3 +81,34 @@ func TestSubTest(t *testing.T){
 		require.Equal(t, "Hello Milson", result, "Result must be Hello Milson")
 	})
 }
+
+type Tests struct{
+	name string
+	request string
+	expected string
+	message string
+}
+
+func TestHelloWorldTable(t *testing.T){
+	tests := []Tests{
+		{
+			name: "HelloWorld(Ichigo)",
+			request: "Ichigo",
+			expected: "Hello Ichigo",
+			message: "Result must be Hello Ichigo",
+		},
+		{
+			name: "HelloWorld(Kurosaki)",
+			request: "Kurosaki",
+			expected: "Hello Kurosaki",
+			message: "Result must be Hello Kurosaki",
+		},
+	}
+
+	for i:= 0; i < len(tests); i++{
+		t.Run(tests[i].name, func(t *testing.T){
+			result := HelloWorld(tests[i].request)
+			assert.Equal(t, tests[i].expected, result, tests[i].message)
+		})
+	}
+}
