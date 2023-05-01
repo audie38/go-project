@@ -1,9 +1,11 @@
 package helper
 
 import (
+	"runtime"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 /**
@@ -18,6 +20,8 @@ Notes:
 
 - Error() : to add unit test failed message, keep continue
 - Fatal() : to add unit test failed message, but unit test stop executing code below within the fucntion
+
+- Skip() : to skip unit test
 
 - stretchr : assert, require
 - assert functions : if unit test failed -> will trigger Fail()
@@ -45,4 +49,13 @@ func TestHelloWorld2(t *testing.T){
 		// t.FailNow()
 		t.Fatal("Result must be Hi Audie")
 	}
+}
+
+func TestSkip(t *testing.T){
+	if runtime.GOOS == "windows"{
+		t.Skip("Unit Test Cannot run on Windows OS")
+	}
+
+	result := HelloWorld("Audie")
+	require.Equal(t, "Hello Audie", result)
 }
