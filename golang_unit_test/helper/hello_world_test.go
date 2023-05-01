@@ -1,6 +1,10 @@
 package helper
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
 
 /**
 Notes:
@@ -14,7 +18,18 @@ Notes:
 
 - Error() : to add unit test failed message, keep continue
 - Fatal() : to add unit test failed message, but unit test stop executing code below within the fucntion
+
+- stretchr : assert, require
+- assert functions : if unit test failed -> will trigger Fail()
+- require functions : if unit test failed -> will trigger FailNow()
+- functions: Equal, NotEqual, Nil, NotNil
+- params: (t, [expected result], [actual result], [message])
 */
+
+func TestHelloWorldAssert(t *testing.T){
+	result := HelloWorld("Milson")
+	assert.Equal(t, "Hello Audie", result, "Result must be Hello Audie")
+}
 
 func TestHelloWorld(t *testing.T){
 	result := HelloWorld("Audie")
