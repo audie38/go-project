@@ -1,6 +1,7 @@
 package helper
 
 import (
+	"fmt"
 	"runtime"
 	"testing"
 
@@ -58,4 +59,12 @@ func TestSkip(t *testing.T){
 
 	result := HelloWorld("Audie")
 	require.Equal(t, "Hello Audie", result)
+}
+
+func TestMain(m *testing.M){
+	// Before
+	fmt.Println("Before Unit Test")
+	m.Run()
+	fmt.Println("After Unit Test")
+	// After
 }
