@@ -15,6 +15,7 @@ Notes:
 - go test -v : run test and show what func tested
 - go test -v -run [func name] : run specific test function
 - go test ./... : run go test from root folder
+- go test -run [func]/[sub test name] : run Specific SubTest
 
 - Fail() : failed the test but keep continue
 - FailNow() : failed the unit test and stop executing code below within the fucntion
@@ -63,8 +64,20 @@ func TestSkip(t *testing.T){
 
 func TestMain(m *testing.M){
 	// Before
-	fmt.Println("Before Unit Test")
+	fmt.Println("BEFORE UNIT TEST")
 	m.Run()
-	fmt.Println("After Unit Test")
+	fmt.Println("AFTER UNIT TEST")
 	// After
+}
+
+func TestSubTest(t *testing.T){
+	t.Run("Audie", func(t *testing.T){
+		result := HelloWorld("Audie")
+		require.Equal(t, "Hello Audie", result, "Result must be Hello Audie")
+	})
+
+	t.Run("Milson", func(t *testing.T){
+		result := HelloWorld("Milson")
+		require.Equal(t, "Hello Milson", result, "Result must be Hello Milson")
+	})
 }
