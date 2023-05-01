@@ -17,6 +17,12 @@ Notes:
 - go test ./... : run go test from root folder
 - go test -run [func]/[sub test name] : run Specific SubTest
 
+- go test -v -bench : run benchmark
+- go test -v -run=NotMathUnitTest -bench=. : run only benchmark
+- go test -v -run=[random non existent unit test functions name] -bench=[benchmark function name]
+- go test -v -bench=. ./... : run all benchmark
+
+
 - Fail() : failed the test but keep continue
 - FailNow() : failed the unit test and stop executing code below within the fucntion
 
@@ -109,6 +115,47 @@ func TestHelloWorldTable(t *testing.T){
 		t.Run(tests[i].name, func(t *testing.T){
 			result := HelloWorld(tests[i].request)
 			assert.Equal(t, tests[i].expected, result, tests[i].message)
+		})
+	}
+}
+
+func BenchmarkHelloWorld(b *testing.B){
+	for i := 0; i < b.N; i++ {
+		HelloWorld("Audie")
+	}
+}
+
+func BenchmarkSub(b *testing.B){
+	b.Run("Audie", func(b *testing.B){
+		for i := 0; i < b.N; i++ {
+			HelloWorld("Audie")
+		}
+	})
+
+	b.Run("Milson", func(b *testing.B){
+		for i := 0; i < b.N; i++ {
+			HelloWorld("Milson")
+		}
+	})
+}
+
+func BenchmarkTable(b *testing.B){
+	tests := []Tests{
+		{
+			name: "HelloWorld(Ichigo)",
+			request: "Ichigo",
+		},
+		{
+			name: "HelloWorld(Kurosaki)",
+			request: "Kurosaki",
+		},
+	}
+
+	for _, test := range tests{
+		b.Run(test.name, func(b *testing.B){
+			for i := 0; i < b.N; i++ {
+				HelloWorld(test.request)
+			}
 		})
 	}
 }
