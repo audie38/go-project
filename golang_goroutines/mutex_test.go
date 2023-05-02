@@ -110,6 +110,6 @@ func TestTransfer(t *testing.T){
 
 	time.Sleep(5 * time.Second)
 
-	fmt.Println(user1)
-	fmt.Println(user2)
+	fmt.Println(user1.Name, user1.Balance)
+	fmt.Println(user2.Name, user2.Balance)
 }
