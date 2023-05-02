@@ -12,6 +12,8 @@ import (
 - Channel by default pass by reference
 - Channel <- : send
 - <-Channel  : receive
+- Channel by default can only send/receive 1 data
+- Buffered : Capacity of how many data can be send/received in channel
 */
 
 func TestCreateChannel(t *testing.T) {
@@ -62,4 +64,23 @@ func TestInOutChannel(t *testing.T){
 	go OnlyIn(channel)
 	go OnlyOut(channel)
 	time.Sleep(5 * time.Second)
+}
+
+func TestBufferedChannel(t *testing.T){
+	channel := make(chan string, 3)
+	defer close(channel)
+
+	go func(){
+		channel <- "Audie"
+		channel <- "Milson"
+
+		fmt.Println("len(channel)", len(channel))
+		fmt.Println("cap(channel)", cap(channel))
+
+		fmt.Println("Channel[0]", <- channel)
+		fmt.Println("Channel[1]", <- channel)
+	}()
+	
+	time.Sleep(2 * time.Second)
+	fmt.Println("Done")
 }
