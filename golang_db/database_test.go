@@ -39,6 +39,30 @@ func TestExecSql(t *testing.T){
 	}
 }
 
+func TestExecParameterizedSql(t *testing.T){
+	db := GetConnection();
+	defer db.Close()
+
+	username := "audie"
+	password := "milson"
+
+	ctx := context.Background()
+	query := "INSERT INTO USER(USERNAME, PASSWORD) VALUES(?, ?)"
+	result, err := db.ExecContext(ctx, query, username, password)
+
+	if err != nil{
+		panic(err)
+	}
+
+	insertedId, err := result.LastInsertId()
+
+	if err != nil{
+		panic(err)
+	}
+
+	fmt.Println("Inserted UserId : ", insertedId)
+}
+
 func TestQuerySql(t *testing.T){
 	db := GetConnection();
 	defer db.Close()
@@ -68,6 +92,37 @@ func TestQuerySql(t *testing.T){
 		}
 
 		fmt.Println(id, name, email, balance, rating, birthDt, createdAt, married)
+	}
+
+	defer rows.Close()
+}
+
+func TestQueryParameterizedSql(t *testing.T){
+	db := GetConnection();
+	defer db.Close()
+
+	ctx := context.Background()
+	username := "milson"
+	password := "milson"
+
+	query := "SELECT USERNAME FROM USER WHERE USERNAME = ? AND PASSWORD = ? LIMIT 1"
+	rows, err := db.QueryContext(ctx, query, username, password)
+
+	if err != nil{
+		panic(err)
+	}
+
+	for rows.Next(){
+		var(
+			userName string
+		)
+
+		err := rows.Scan(&userName)
+		if err != nil{
+			panic(err)
+		}
+
+		fmt.Println(userName, "Login Success")
 	}
 
 	defer rows.Close()
