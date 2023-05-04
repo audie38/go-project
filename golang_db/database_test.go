@@ -157,3 +157,62 @@ func TestPrepareStatement(t *testing.T){
 
 	fmt.Println("Inserted Id: ", id)
 }
+
+func InsertUserTrx(db *sql.DB, ctx context.Context, userName string, password string){
+	// Trx
+	qry := "INSERT INTO USER(USERNAME, PASSWORD) VALUES(?, ?)"
+
+	stmnt, err := db.PrepareContext(ctx, qry)
+	if err != nil{
+		panic(err)
+	}
+
+	defer stmnt.Close()
+
+	result, err := stmnt.ExecContext(ctx, userName, password)
+	if err != nil{
+		panic(err)
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil{
+		panic(err)
+	}
+
+	fmt.Println("Inserted Id: ", id)
+	// End Trx
+}
+
+func TestTransaction(t *testing.T){
+	db := GetConnection()
+	defer db.Close()
+
+	ctx := context.Background()
+
+	tx, err := db.Begin()
+	if err != nil{
+		panic(err)
+	}
+
+	qry := "INSERT INTO USER(USERNAME, PASSWORD) VALUES(?, ?)"
+	username := "admin"
+	password := "admin"
+	result, err := tx.ExecContext(ctx, qry, username, password)
+
+	if err != nil{
+		panic(err)
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil{
+		panic(err)
+	}
+
+	fmt.Println("Inserted Id: ", id)
+
+	err = tx.Commit()
+	// err = tx.Rollback()
+	if err != nil{
+		panic(err)
+	}
+}
