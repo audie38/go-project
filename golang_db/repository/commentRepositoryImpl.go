@@ -17,7 +17,7 @@ func NewCommentRepository(db *sql.DB) CommentRepository{
 }
 
 func (repository *commentRepositoryImpl) Insert(ctx context.Context, comment entity.Comment) (entity.Comment, error){
-	query := "INSERT INTO COMMENTS(EMAIL, COMMENT) VALUES(?, ?)"
+	query := "INSERT INTO COMMENT(EMAIL, COMMENT) VALUES(?, ?)"
 	result, err := repository.DB.ExecContext(ctx, query, comment.Email, comment.Comment)
 	if err != nil{
 		return comment, err
@@ -42,9 +42,9 @@ func (repository *commentRepositoryImpl) Update(ctx context.Context, comment ent
 	comment.Id = id
 	return "Comment Updated", nil
 }
-func (repository *commentRepositoryImpl) Delete(ctx context.Context, comment entity.Comment) (string, error){
+func (repository *commentRepositoryImpl) Delete(ctx context.Context, id int64) (string, error){
 	query := "DELETE FROM COMMENT WHERE COMMENT_ID = ?"
-	_, err := repository.DB.ExecContext(ctx, query, comment.Email, comment.Comment)
+	_, err := repository.DB.ExecContext(ctx, query, id)
 	if err != nil{
 		return "Failed to Delete Comment", err
 	}
