@@ -127,3 +127,33 @@ func TestQueryParameterizedSql(t *testing.T){
 
 	defer rows.Close()
 }
+
+func TestPrepareStatement(t *testing.T){
+	db := GetConnection()
+	defer db.Close()
+
+	ctx := context.Background()
+	qry := "INSERT INTO USER(USERNAME, PASSWORD) VALUES(?, ?)"
+
+	stmnt, err := db.PrepareContext(ctx, qry)
+	if err != nil{
+		panic(err)
+	}
+
+	defer stmnt.Close()
+
+	username := "test123"
+	password := "password"
+
+	result, err := stmnt.ExecContext(ctx, username, password)
+	if err != nil{
+		panic(err)
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil{
+		panic(err)
+	}
+
+	fmt.Println("Inserted Id: ", id)
+}
